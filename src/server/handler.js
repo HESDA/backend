@@ -22,7 +22,7 @@ async function postPredictHandler(request, h) {
     console.log("Prediction successful, data:", data);
 
     // Menyimpan data prediksi ke Firestore
-    // await storeData(id, data);
+    await storeData(id, data);
 
     const response = h.response({
       status: 'success',
