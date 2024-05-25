@@ -1,5 +1,6 @@
 const predictClassification = require('../services/inferenceService');
 const crypto = require('crypto');
+const storeData = require('../services/storeData');
 const InputError = require('../exceptions/InputError');
 
 async function postPredictHandler(request, h) {
@@ -7,20 +8,21 @@ async function postPredictHandler(request, h) {
   const { model } = request.server.app;
 
   try {
-    console.log("Processing image:", image);
-
     const { label, suggestion } = await predictClassification(model, image);
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
     const data = {
-      "id": id,
-      "result": label,
-      "suggestion": suggestion,
-      "createdAt": createdAt
+      id: id,
+      result: label,
+      suggestion: suggestion,
+      createdAt: createdAt
     };
 
     console.log("Prediction successful, data:", data);
+
+    // Menyimpan data prediksi ke Firestore
+    await storeData(id, data);
 
     const response = h.response({
       status: 'success',
