@@ -1,6 +1,6 @@
 const predictClassification = require('../services/inferenceService');
 const crypto = require('crypto');
-const storeData = require('../services/storeData');
+const { storeData, getAllData } = require('../services/storeData');
 const InputError = require('../exceptions/InputError');
 
 async function postPredictHandler(request, h) {
@@ -48,4 +48,22 @@ async function postPredictHandler(request, h) {
   }
 }
 
-module.exports = postPredictHandler;
+async function getHistoryHandler(request, h) {
+  try {
+    const data = await getAllData();
+    const response = h.response({
+      status: 'success',
+      data: data
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    return h.response({
+      status: 'fail',
+      message: 'Terjadi kesalahan dalam mengambil data'
+    }).code(500);
+  }
+}
+
+module.exports = { postPredictHandler, getHistoryHandler };
