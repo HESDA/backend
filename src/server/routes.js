@@ -1,25 +1,24 @@
-const { postPredictHandler, getHistoryHandler } = require('../server/handler');
+const { postPredictHandler, getHistoriesHandler } = require('./handler');
 
 const routes = [
-  {
-    path: '/predict',
-    method: 'POST',
-    handler: postPredictHandler,
-    options: {
-      payload: {
-        allow: 'multipart/form-data',
-        multipart: true,
-        maxBytes: 1000000, // Batas maksimal ukuran file 1MB
-        output: 'stream',
-        parse: true
-      }
+    {
+        path: '/predict',
+        method: 'POST',
+        handler: postPredictHandler,
+        options: {
+            payload: {
+                /*Mengizinkan data berupa gambar*/
+                allow: 'multipart/form-data',
+                multipart: true,
+                maxBytes: 1000000
+            }
+        }
+    },
+    {
+        path: '/predict/histories',
+        method: 'GET',
+        handler: getHistoriesHandler
     }
-  },
-  {
-    path: '/predict/histories',
-    method: 'GET',
-    handler: getHistoryHandler
-  }
-];
+]
 
 module.exports = routes;

@@ -2,3 +2,6 @@ node_modules
 .vscode
 .env
 package-lock.json
+firestore-page.png
+ml_backend.zip
+requirements.json
